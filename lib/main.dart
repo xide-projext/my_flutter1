@@ -14,7 +14,7 @@ void main() async {
       // When navigating to the "/" route, build the FirstScreen widget.
       '/': (context) => const FirstScreen(),
       // When navigating to the "/second" route, build the SecondScreen widget.
-      '/second': (context) => const FirstScreen(),
+      '/second': (context) => const SecondScreen(),
     },
   ));
 }
@@ -91,5 +91,19 @@ class FirstScreen extends StatelessWidget {
                     ],
                   ),
                 ]))));
+  }
+}
+
+
+
+class SecondScreen extends StatelessWidget {
+  const SecondScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(title: const Text("내폰내툰2")),
+        body: const Text("2")
+    );
   }
 }

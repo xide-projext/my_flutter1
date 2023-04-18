@@ -25,128 +25,51 @@ void main() async {
   ));
 }
 
-/// 결과 페이지
-/// * [correctAnswers] 정답 개수
-/// * [totalQuestions] 총 문제 개수
-///
-/// 위 코드는 스크롤이 가능한 Column 위젯과, 그 안에 높이가 200인 빈 박스, 높이가 300인 스크롤 가능한 ListView.builder 위젯, 또 다시 높이가 200인 빈 박스로 구성되어 있습니다. 상단에는 앱바가 있으며, 두 번째 빈 박스 위에는 여러 개의 Card 위젯이 ListView.builder를 이용하여 리스트 형태로 출력됩니다. 리스트의 각 아이템은 ListTile 위젯으로 구성되며, FlutterLogo 위젯, Text 위젯, Icon 위젯으로 이루어져 있습니다. 리스트의 아이템을 탭하면 /second 경로로 이동합니다. 이렇게 스크롤이 가능한 Column 위젯과 ListView.builder
-
-class FirstScreen extends StatefulWidget {
-  const FirstScreen({Key? key}) : super(key: key);
-
-  @override
-  _FirstScreenState createState() => _FirstScreenState();
-}
-
-class _FirstScreenState extends State<FirstScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final List<String> _items = List.generate(17, (index) => '$index');
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    super.dispose();
-  }
-
-  void _showSnackbar(BuildContext context, String message) {
-    final snackBar = SnackBar(content: Text(message));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-
-  void _onSubmit() {
-    if (_formKey.currentState!.validate()) {
-      Navigator.pushNamed(context, '/second');
-    } else {
-      _showSnackbar(context, 'Please enter a valid email address');
-    }
-  }
+class FirstScreen extends StatelessWidget {
+  const FirstScreen({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Language learning app")),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            child: FutureBuilder(
-              future: Future.delayed(Duration(seconds: 2)),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                }
-                return ListView.builder(
-                  itemCount: _items.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return SizedBox(
-                      height: 120,
-                      child: Card(
-                        child: ListTile(
-                          leading: FlutterLogo(size: 72.0),
-                          title: Text('Three-line ListTile'),
-                          subtitle: Text(
-                              'A sufficiently long subtitle warrants three lines.  ${_items[index]}'),
-                          trailing: IconButton(
-                            icon: Icon(Icons.delete),
-                            onPressed: () {
-                              setState(() {
-                                _items.removeAt(index);
-                              });
-                              _showSnackbar(context, 'Item deleted');
-                            },
-                          ),
-                          isThreeLine: true,
-                          onTap: () {
-                            Navigator.pushNamed(context, '/second');
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
+      appBar: AppBar(
+        title: const Text("Language learning app"),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const Placeholder(
+              fallbackHeight: 200,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'Please enter your email address to continue:',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      TextFormField(
-                        controller: _emailController,
-                        decoration: const InputDecoration(
-                          hintText: 'Enter your email',
-                        ),
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your email address';
-                          }
-                          return null;
-                        },
+            SizedBox(
+              height: 300,
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 17,
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/second');
+                    },
+                    child: Card(
+                      child: ListTile(
+                        leading: FlutterLogo(size: 72.0),
+                        title: Text('Three-line ListTile'),
+                        subtitle: Text(
+                            'A sufficiently long subtitle warrants three lines.  $index'),
+                        trailing: const Icon(Icons.more_vert),
+                        isThreeLine: true,
                       ),
-                      SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: _onSubmit,
-                        child: const Text('Submit'),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+            const Placeholder(
+              fallbackHeight: 200,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -7,7 +7,7 @@ void main() async {
       // When navigating to the "/" route, build the FirstScreen widget.
       '/': (context) => FirstScreen(),
       // When navigating to the "/second" route, build the SecondScreen widget.
-      '/second': (context) => SecondScreen(),
+      '/second': (context) => QuizPage(),
       '/third': (context) => ThirdScreen(),
     },
   ));
@@ -58,14 +58,51 @@ class FirstScreen extends StatelessWidget {
   }
 }
 
-class SecondScreen extends StatelessWidget {
-  const SecondScreen({super.key});
-
+class QuizPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("Language learning app")),
-        body: const Text("2"));
+      appBar: AppBar(
+        title: Text('퀴즈'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Card(
+              child: Column(
+                children: [
+                  Text('영어 단어'),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Text('뜻 1'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Text('뜻 2'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Text('뜻 3'),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 16),
+            Text('맞은 개수: 0'),
+            SizedBox(height: 8),
+            Text('틀린 개수: 0'),
+            SizedBox(height: 8),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/result');
+              },
+              child: Text('완료'),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

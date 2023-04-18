@@ -14,6 +14,8 @@ void main() async {
 }
 
 class FirstScreen extends StatelessWidget {
+  const FirstScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +26,7 @@ class FirstScreen extends StatelessWidget {
           const Placeholder(
             fallbackHeight: 200, // Placeholder의 높이를 지정합니다.
           ),
-          Container(
+          SizedBox(
               height: 300, //
               child: SingleChildScrollView(
                   // https://sharegpt.com/c/Se6pTmq
@@ -57,6 +59,8 @@ class FirstScreen extends StatelessWidget {
 }
 
 class SecondScreen extends StatelessWidget {
+  const SecondScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,6 +70,8 @@ class SecondScreen extends StatelessWidget {
 }
 
 class ThirdScreen extends StatelessWidget {
+  const ThirdScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

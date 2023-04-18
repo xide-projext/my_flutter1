@@ -8,7 +8,7 @@ void main() async {
       '/': (context) => FirstScreen(),
       // When navigating to the "/second" route, build the SecondScreen widget.
       '/second': (context) => QuizPage(),
-      '/third': (context) => ThirdScreen(),
+      '/result': (context) => ThirdScreen(),
     },
   ));
 }
@@ -58,49 +58,113 @@ class FirstScreen extends StatelessWidget {
   }
 }
 
-class QuizPage extends StatelessWidget {
+// https://sharegpt.com/c/B3lxchS
+class QuizPage extends StatefulWidget {
+  @override
+  _QuizPageState createState() => _QuizPageState();
+}
+
+class _QuizPageState extends State<QuizPage> {
+  int _correctAnswers = 0;
+  int _wrongAnswers = 0;
+  int _currentIndex = 0;
+
+  List<Map<String, dynamic>> _questions = [
+    {
+      'question': 'apple',
+      'answers': ['사과', '포도', '배'],
+      'correctIndex': 0,
+    },
+    {
+      'question': 'banana',
+      'answers': ['바나나', '키위', '딸기'],
+      'correctIndex': 0,
+    },
+    {
+      'question': 'cherry',
+      'answers': ['체리', '수박', '포도'],
+      'correctIndex': 0,
+    },
+  ];
+
+  void _onAnswerSelected(int selectedIndex) {
+    setState(() {
+      if (_questions[_currentIndex]['correctIndex'] == selectedIndex) {
+        _correctAnswers++;
+      } else {
+        _wrongAnswers++;
+      }
+
+      if (_currentIndex == _questions.length - 1) {
+        Navigator.pushNamed(
+          context,
+          '/result',
+          arguments: {
+            'correctAnswers': _correctAnswers,
+            'totalQuestions': _questions.length
+          },
+        );
+      } else {
+        _currentIndex++;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('퀴즈'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Card(
-              child: Column(
-                children: [
-                  Text('영어 단어'),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text('뜻 1'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text('뜻 2'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text('뜻 3'),
-                  ),
-                ],
+      body: Column(
+        children: [
+          SizedBox(height: 16),
+          LinearProgressIndicator(
+            value: (_currentIndex + 1) / _questions.length,
+            backgroundColor: Colors.grey[300],
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+          ),
+          SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              '문제 ${_currentIndex + 1}/${_questions.length}',
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+          SizedBox(height: 16),
+          Expanded(
+            child: Card(
+              margin: const EdgeInsets.symmetric(horizontal: 5),
+              elevation: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      _questions[_currentIndex]['question'],
+                      style: TextStyle(fontSize: 28),
+                    ),
+                    ...(_questions[_currentIndex]['answers'] as List<String>)
+                        .asMap()
+                        .entries
+                        .map(
+                          (entry) => ElevatedButton(
+                            onPressed: () => _onAnswerSelected(entry.key),
+                            child: Text(
+                              entry.value,
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ],
+                ),
               ),
             ),
-            SizedBox(height: 16),
-            Text('맞은 개수: 0'),
-            SizedBox(height: 8),
-            Text('틀린 개수: 0'),
-            SizedBox(height: 8),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/result');
-              },
-              child: Text('완료'),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

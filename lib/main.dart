@@ -8,7 +8,19 @@ void main() async {
       '/': (context) => FirstScreen(),
       // When navigating to the "/second" route, build the SecondScreen widget.
       '/second': (context) => QuizPage(),
-      '/result': (context) => ThirdScreen(),
+    },
+    onGenerateRoute: (RouteSettings settings) {
+      // https://sharegpt.com/c/aPDwZ64
+      if (settings.name == '/result') {
+        final Map<String, dynamic> arguments =
+            settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (context) => ResultPage(
+            correctAnswers: arguments['correctAnswers'] as int,
+            totalQuestions: arguments['totalQuestions'] as int,
+          ),
+        );
+      }
     },
   ));
 }
@@ -69,10 +81,10 @@ class _QuizPageState extends State<QuizPage> {
   int _wrongAnswers = 0;
   int _currentIndex = 0;
 
-  List<Map<String, dynamic>> _questions = [
+  final List<Map<String, dynamic>> _questions = [
     {
       'question': 'apple',
-      'answers': ['사과', '포도', '배'],
+      "answers": ['사과', '포도', '배'],
       'correctIndex': 0,
     },
     {
@@ -170,13 +182,63 @@ class _QuizPageState extends State<QuizPage> {
   }
 }
 
-class ThirdScreen extends StatelessWidget {
-  const ThirdScreen({super.key});
+// https://sharegpt.com/c/aPDwZ64
+class ResultPage extends StatelessWidget {
+  final int correctAnswers;
+  final int totalQuestions;
+
+  ResultPage({required this.correctAnswers, required this.totalQuestions});
+
+  String get resultPhrase {
+    double percentage = correctAnswers / totalQuestions;
+
+    if (percentage >= 0.9) {
+      return '대단해요!';
+    } else if (percentage >= 0.7) {
+      return '잘했어요!';
+    } else if (percentage >= 0.5) {
+      return '좀 더 노력해주세요';
+    } else {
+      return '분발하세요!';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("Language learning app")),
-        body: const Text("3"));
+      appBar: AppBar(
+        title: Text('결과'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              resultPhrase,
+              style: TextStyle(fontSize: 24),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 16),
+            Text(
+              '맞은 개수: $correctAnswers/$totalQuestions',
+              style: TextStyle(fontSize: 20),
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  '/',
+                  (route) => false,
+                );
+              },
+              child: Text('홈으로'),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

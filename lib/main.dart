@@ -41,6 +41,9 @@ class FirstScreen extends StatelessWidget {
                           'A sufficiently long subtitle warrants three lines.  $index'),
                       trailing: Icon(Icons.more_vert),
                       isThreeLine: true,
+                      onTap: () {
+                        Navigator.pushNamed(context, '/second');
+                      }, // Handle your onTap here.
                     ),
                   );
                 },
@@ -56,6 +59,7 @@ class SecondScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("내폰내툰2")), body: const Text("2"));
+        appBar: AppBar(title: const Text("Language learning app")),
+        body: const Text("2"));
   }
 }

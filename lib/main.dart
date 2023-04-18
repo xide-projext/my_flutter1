@@ -8,6 +8,7 @@ void main() async {
       '/': (context) => FirstScreen(),
       // When navigating to the "/second" route, build the SecondScreen widget.
       '/second': (context) => SecondScreen(),
+      '/third': (context) => ThirdScreen(),
     },
   ));
 }
@@ -61,5 +62,14 @@ class SecondScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(title: const Text("Language learning app")),
         body: const Text("2"));
+  }
+}
+
+class ThirdScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(title: const Text("Language learning app")),
+        body: const Text("3"));
   }
 }

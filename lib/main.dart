@@ -17,19 +17,23 @@ class FirstScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: const Text("Language learning app")),
-        body: Container(
-            child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const Placeholder(
-                fallbackHeight: 200, // Placeholder의 높이를 지정합니다.
-              ),
-              ListView.builder(
+        body: SingleChildScrollView(
+            // https://api.flutter.dev/flutter/widgets/SingleChildScrollView-class.html
+            child: Column(children: [
+          const Placeholder(
+            fallbackHeight: 200, // Placeholder의 높이를 지정합니다.
+          ),
+          Container(
+              height: 300, //
+              child: SingleChildScrollView(
+                  // https://sharegpt.com/c/Se6pTmq
+                  child: ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: 7,
+                itemCount: 17,
                 itemBuilder: (BuildContext context, int index) {
                   return Card(
+                    // https://api.flutter.dev/flutter/material/ListTile-class.html
                     child: ListTile(
                       leading: FlutterLogo(size: 72.0),
                       title: Text('Three-line ListTile'),
@@ -40,13 +44,11 @@ class FirstScreen extends StatelessWidget {
                     ),
                   );
                 },
-              ),
-              const Placeholder(
-                fallbackHeight: 100, // Placeholder의 높이를 지정합니다.
-              ),
-            ],
+              ))),
+          const Placeholder(
+            fallbackHeight: 200, // Placeholder의 높이를 지정합니다.
           ),
-        )));
+        ])));
   }
 }
 

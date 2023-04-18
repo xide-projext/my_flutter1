@@ -26,52 +26,53 @@ void main() async {
 }
 
 class FirstScreen extends StatelessWidget {
-  const FirstScreen({Key? key});
+  const FirstScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Language learning app"),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const Placeholder(
-              fallbackHeight: 200,
-            ),
-            SizedBox(
-              height: 300,
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: 17,
+        appBar: AppBar(title: const Text("Language learning app")), // 상단 앱바
+        body: SingleChildScrollView(
+            // 스크롤이 가능한 위젯
+            child: Column(children: [
+          const Placeholder(
+            fallbackHeight: 200, // Placeholder의 높이를 지정합니다.
+          ), // 높이가 200인 빈 박스
+          SizedBox(
+              height: 300, //
+              child: SingleChildScrollView(
+                  // 스크롤이 가능한 위젯
+                  child: ListView.builder(
+                shrinkWrap: true, // 리스트뷰의 크기를 자식 위젯에 맞춥니다.
+                physics:
+                    const NeverScrollableScrollPhysics(), // 리스트뷰에서 스크롤 동작을 막습니다.
+                itemCount: 17, // 아이템의 개수
                 itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/second');
-                    },
-                    child: Card(
-                      child: ListTile(
-                        leading: FlutterLogo(size: 72.0),
-                        title: Text('Three-line ListTile'),
-                        subtitle: Text(
-                            'A sufficiently long subtitle warrants three lines.  $index'),
-                        trailing: const Icon(Icons.more_vert),
-                        isThreeLine: true,
-                      ),
+                  // 리스트뷰의 아이템을 구성하는 위젯
+                  return Card(
+                    // 카드 위젯
+                    child: ListTile(
+                      // 리스트 타일 위젯
+                      leading:
+                          FlutterLogo(size: 72.0), // 카드의 왼쪽에 이미지 아이콘을 표시합니다.
+                      title: Text('Three-line ListTile'), // 리스트 타일의 제목
+                      subtitle: Text(
+                          'A sufficiently long subtitle warrants three lines.  $index'), // 리스트 타일의 부제목
+                      trailing:
+                          Icon(Icons.more_vert), // 리스트 타일의 오른쪽에 표시되는 추가 정보 아이콘
+                      isThreeLine: true, // 리스트 타일이 세 줄로 구성됩니다.
+                      onTap: () {
+                        Navigator.pushNamed(context,
+                            '/second'); // 리스트 타일을 탭하면 /second 경로로 이동합니다.
+                      }, // Handle your onTap here.
                     ),
                   );
                 },
-              ),
-            ),
-            const Placeholder(
-              fallbackHeight: 200,
-            ),
-          ],
-        ),
-      ),
-    );
+              ))),
+          const Placeholder(
+            fallbackHeight: 200, // Placeholder의 높이를 지정합니다.
+          ), // 높이가 200인 빈 박스
+        ])));
   }
 }
 
